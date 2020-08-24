@@ -23,13 +23,32 @@ export default function App() {
     callbackClearInput('');
   };
 
+  /*
+
+  */
+  const removeGoalHandler = goalId => {
+    setGoals(currentGoals => {
+      // JS filter return true to keep value in array
+      // return false to delete
+      console.log('received id is ', goalId);
+      const newValue = currentGoals.filter((goal) => goal.key !== goalId);
+      console.log(newValue);
+      return newValue;
+    });
+  }
+
   return (
     <View style={styles.screen}>
       <GoalInput onAddGoal={addGoalHandler} />
       <FlatList
+        keyExtractor={(item, index) => item.key}
         data={goals}
         renderItem={itemData => (
-          <GoalItem title={itemData.item.value} />
+          <GoalItem
+            title={itemData.item.value}
+            onDelete={removeGoalHandler}
+            id={itemData.item.key}
+          />
         )}
       />
     </View>
